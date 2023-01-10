@@ -1,0 +1,59 @@
+---
+title: "A1_Lynch_20106135"
+author: "Kerri Lynch"
+date: "2023-01-09"
+output: html_document
+---
+
+<https://github.com/klynch416/BIOL432_A1>
+
+Creates a matrix with 4 columns (Species, Limb_length, Limb_width, Observer) and 100 rows for entries
+Randomly sample 100 species/observer names from the given list and assign it to one of the matrix columns
+Has a loop run through the matrix one at a time, randomly sample one value within the parameter set for each species name (corresponding with i)
+
+```{r}
+
+source("dataGenerato.R")
+
+```
+
+Read measurements.csv file and create a new column (limb volume) based on the equation for a cylinder using limb length and width
+```{r}
+
+source("volumeEstimato.R")
+
+```
+
+Created a table that shows the average limb volume by species and the number of observations each species was recorded by observer
+```{r}
+library(ggplot2)
+
+measurements <- measurements %>% group_by(Species, Observer, Limb_volume)
+avg_vol <- measurements %>% group_by(Species) %>% summarise(mean(Limb_volume))
+avg_vol
+num_obs <- measurements %>% group_by(Species, Observer) %>% count(Species)
+num_obs
+
+```
+
+A single box plot to compare the distributions of limb volumes for each species.
+```{r Species_Limb_Volume}
+ggplot(data = measurements, aes(x = Species, y = Limb_volume)) +
+  geom_boxplot() +
+  theme_classic() +
+  xlab("Limb volume") +
+  ylab("Species")
+```
+
+A multi-panel plot showing frequency histograms for each species.
+```{r Histogram}
+ggplot(data = measurements, aes(x = Limb_volume, fill = Species)) +
+  geom_histogram() +
+  facet_wrap(~Species) +
+  xlab("Limb volume") +
+  ylab("Count") +
+  theme_classic()
+
+```
+
+
