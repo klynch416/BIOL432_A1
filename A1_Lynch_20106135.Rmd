@@ -7,6 +7,16 @@ output: html_document
 
 <https://github.com/klynch416/BIOL432_A1>
 
+```{r}
+
+library(ggplot2)
+library(dplyr)
+source("https://bit.ly/theme_pub")
+theme_set(theme_pub())
+
+```
+
+
 Creates a matrix with 4 columns (Species, Limb_length, Limb_width, Observer) and 100 rows for entries
 Randomly sample 100 species/observer names from the given list and assign it to one of the matrix columns
 Has a loop run through the matrix one at a time, randomly sample one value within the parameter set for each species name (corresponding with i)
@@ -26,7 +36,6 @@ source("volumeEstimato.R")
 
 Created a table that shows the average limb volume by species and the number of observations each species was recorded by observer
 ```{r}
-library(ggplot2)
 
 measurements <- measurements %>% group_by(Species, Observer, Limb_volume)
 avg_vol <- measurements %>% group_by(Species) %>% summarise(mean(Limb_volume))
@@ -37,22 +46,21 @@ num_obs
 ```
 
 A single box plot to compare the distributions of limb volumes for each species.
-```{r Species_Limb_Volume}
+```{r Species_Limb_Volume, fig.cap="Figure 1. Limb volume distribution for five different species; Hydrurga leptonyx (n=23), Setonix brachyurus (n=24),Tyto alba (n=14), Rhincodon typus (n=22), Bison bison (n=17). Limb volume was calculated by ((Limbwidth/2)^2)/Limb length, each of which was recorded by an observer. Shows a potentially statistically significantdifference in limb volume between species."}
 ggplot(data = measurements, aes(x = Species, y = Limb_volume)) +
   geom_boxplot() +
-  theme_classic() +
   xlab("Limb volume") +
   ylab("Species")
+
 ```
 
 A multi-panel plot showing frequency histograms for each species.
-```{r Histogram}
+```{r Histogram, fig.cap="Figure 2. Limb volume frequency distribution for five different species; Hydrurga leptonyx (n=23), Setonixbrachyurus (n=24), Tyto alba (n=14), Rhincodon typus (n=22), Bison bison (n=17). Limb volume was calculated by((Limb width/2)^2)/Limb length, each of which was recorded by an observer.Shows a potentially statisticallysignificant difference in the distribution of limb volume between species."}
 ggplot(data = measurements, aes(x = Limb_volume, fill = Species)) +
   geom_histogram() +
   facet_wrap(~Species) +
   xlab("Limb volume") +
-  ylab("Count") +
-  theme_classic()
+  ylab("Count")
 
 ```
 
