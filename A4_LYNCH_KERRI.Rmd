@@ -1,0 +1,50 @@
+
+Git repository: <https://github.com/klynch416/BIOL432_A1>
+
+
+```{r}
+library(dplyr)
+```
+
+
+*Import measurements.csv file*
+```{r}
+
+MData <- read.csv("measurements.csv")
+
+```
+
+*Reformat species name in new column*
+```{r}
+
+MData <- MData %>% mutate(Sp = sub("(\\D{1}).*\\s(\\w+)","\\1. \\2", Species))
+
+```
+
+*New dataset with Organism column replaced by Sp column*
+```{r}
+
+NData <- MData %>% select(!Species) %>% relocate(Sp, .after = X)
+
+```
+
+*Save new dataset to csv*
+```{r}
+
+write.csv(NData, "MeasShort.csv")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
